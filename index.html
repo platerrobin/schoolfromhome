@@ -206,7 +206,6 @@
                 <h2>Your Interactive Learning Workspace</h2>
                 <p>Complete your daily real-time assignments, read assigned books, and log your progress directly below.</p>
                 <div id="studentEmbedContainer">
-                    <!-- Dynamic platform integration frame -->
                     <iframe class="workspace-frame" src="about:blank" id="studentCanvasFrame"></iframe>
                 </div>
             </div>
@@ -231,9 +230,7 @@
         <div class="grid-dashboard">
             <div>
                 <h2>Active Student List</h2>
-                <div id="studentListContainer">
-                    <!-- Rendered dynamic student nodes -->
-                </div>
+                <div id="studentListContainer"></div>
             </div>
             
             <div class="panel-box">
@@ -247,7 +244,6 @@
     </div>
 
     <script>
-        // System Data Records
         const students = {
             "Jayce": { name: "Jayce", level: "1st & 2nd Grade Level", pin: "1001", embedUrl: "https://wikipedia.org" },
             "Brayson": { name: "Brayson", level: "3rd Grade", pin: "1002", embedUrl: "https://wikipedia.org" },
@@ -259,7 +255,6 @@
         };
         const adminPin = "8899";
 
-        // Initialize admin views
         function loadAdminPanel() {
             const container = document.getElementById('studentListContainer');
             container.innerHTML = '';
@@ -278,7 +273,6 @@
             });
         }
 
-        // Login Authentication Router
         function handleLogin() {
             const user = document.getElementById('username').value;
             const pin = document.getElementById('passcode').value;
@@ -289,3 +283,9 @@
             if (!user || !pin) {
                 errorElement.innerText = "Please complete all fields.";
                 errorElement.classList.remove('hidden');
+                return;
+            }
+
+            if (user === "admin") {
+                if (pin === adminPin) {
+                    document.getElementById('loginScreen').classList.add('hidden');
