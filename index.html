@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School From Home - Portal</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-main: #f8fafc;
+            --text-dark: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .portal-layout {
+            max-width: 1000px;
+            text-align: left;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #334155;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-btn {
+            background-color: #64748b;
+            margin-top: 15px;
+        }
+
+        .back-btn:hover {
+            background-color: #475569;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .student-card {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-info p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .student-info h3 {
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-dashboard {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .panel-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .error-msg {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .workspace-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 15px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="container">
+        <h1>School From Home</h1>
+        <h2>Student & Admin Login</h2>
+        <div class="form-group">
+            <label for="username">Select Workspace Identity</label>
+            <select id="username">
+                <option value="" disabled selected>Choose your account...</option>
+                <option value="admin">Administrator Portal</option>
+                <option value="Jayce">Jayce (1st & 2nd Grade level)</option>
+                <option value="Brayson">Brayson (3rd Grade)</option>
+                <option value="girl3">Girl 3 (5th Grade)</option>
+                <option value="Kaydon">Kaydon (6th Grade)</option>
+                <option value="Elijah">Elijah (7th Grade level)</option>
+                <option value="girl1">Girl 1 (12th Grade)</option>
+                <option value="girl2">Girl 2 (12th Grade)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="passcode">Secure Passcode</label>
+            <input type="password" id="passcode" placeholder="Enter your 4-digit code">
+        </div>
+        <button onclick="handleLogin()">Access Dashboard</button>
+        <div id="loginError" class="error-msg hidden">Invalid credentials. Please try again.</div>
+    </div>
+
+    <!-- STUDENT DASHBOARD -->
+    <div id="studentDashboard" class="container portal-layout hidden">
+        <h1 id="welcomeText">Welcome Student</h1>
+        <div class="grid-dashboard">
+            <div>
+                <h2>Your Interactive Learning Workspace</h2>
+                <p>Complete your daily real-time assignments, read assigned books, and log your progress directly below.</p>
+                <div id="studentEmbedContainer">
+                    <!-- Dynamic platform integration frame -->
+                    <iframe class="workspace-frame" src="about:blank" id="studentCanvasFrame"></iframe>
+                </div>
+            </div>
+            <div class="panel-box">
+                <h2>Daily Schedule</h2>
+                <ul style="list-style-position: inside; font-size: 15px; line-height: 1.8;">
+                    <li>Morning Math Check-in</li>
+                    <li>Reading Comprehension</li>
+                    <li>Interactive Lessons</li>
+                    <li>Independent Study Block</li>
+                </ul>
+            </div>
+        </div>
+        <button class="back-btn" onclick="logout()">Log Out Securely</button>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" class="container portal-layout hidden">
+        <h1>School From Home Admin System</h1>
+        <h2>Roster Management (9 Current Students)</h2>
+        
+        <div class="grid-dashboard">
+            <div>
+                <h2>Active Student List</h2>
+                <div id="studentListContainer">
+                    <!-- Rendered dynamic student nodes -->
+                </div>
+            </div>
+            
+            <div class="panel-box">
+                <h2>Quick Controls</h2>
+                <p style="font-size: 14px; margin-bottom: 15px; color: #64748b;">Manage security filters or load custom workspaces for specific tablet users.</p>
+                <button style="margin-bottom: 10px; background-color: #10b981;" onclick="alert('School app security updates are fully synchronized.')">Sync All Systems</button>
+                <button style="background-color: #4f46e5;" onclick="alert('Roster adjustments saved.')">Lock Student Logs</button>
+            </div>
+        </div>
+        <button class="back-btn" onclick="logout()">Exit Admin System</button>
+    </div>
+
+    <script>
+        // System Data Records
+        const students = {
+            "Jayce": { name: "Jayce", level: "1st & 2nd Grade Level", pin: "1001", embedUrl: "https://wikipedia.org" },
+            "Brayson": { name: "Brayson", level: "3rd Grade", pin: "1002", embedUrl: "https://wikipedia.org" },
+            "girl3": { name: "Girl 3", level: "5th Grade", pin: "1003", embedUrl: "https://wikipedia.org" },
+            "Kaydon": { name: "Kaydon", level: "6th Grade", pin: "1004", embedUrl: "https://wikipedia.org" },
+            "Elijah": { name: "Elijah", level: "7th Grade Level (6th Grade Work)", pin: "1005", embedUrl: "https://wikipedia.org" },
+            "girl1": { name: "Girl 1", level: "12th Grade", pin: "1006", embedUrl: "https://wikipedia.org" },
+            "girl2": { name: "Girl 2", level: "12th Grade", pin: "1007", embedUrl: "https://wikipedia.org" }
+        };
+        const adminPin = "8899";
+
+        // Initialize admin views
+        function loadAdminPanel() {
+            const container = document.getElementById('studentListContainer');
+            container.innerHTML = '';
+            Object.keys(students).forEach(key => {
+                const s = students[key];
+                const node = document.createElement('div');
+                node.className = 'student-card';
+                node.innerHTML = `
+                    <div class="student-info">
+                        <h3>${s.name}</h3>
+                        <p>Track: ${s.level} | Security Key: ${s.pin}</p>
+                    </div>
+                    <span style="font-size: 13px; color: #10b981; font-weight: bold;">● Active Portal</span>
+                `;
+                container.appendChild(node);
+            });
+        }
+
+        // Login Authentication Router
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pin = document.getElementById('passcode').value;
+            const errorElement = document.getElementById('loginError');
+
+            errorElement.classList.add('hidden');
+
+            if (!user || !pin) {
+                errorElement.innerText = "Please complete all fields.";
+                errorElement.classList.remove('hidden');
