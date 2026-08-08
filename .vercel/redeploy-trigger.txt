@@ -1,0 +1,3 @@
+Triggering Vercel redeploy to run vercel-build (prisma migrate + seed)
+
+Timestamp: 2026-08-08T05:09:56Z
