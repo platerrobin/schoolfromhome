@@ -10,7 +10,7 @@ async function main(){
   })
 
   const studentsData = [
-    { email: 'jayce.plater@example.test', name: 'Jayce Plater', gradeFrom: 1, gradeTo: 2 },
+    { email: 'jayce.plater@example.test', name: 'Jayce Plater', gradeFrom: 0, gradeTo: 2 },
     { email: 'brayson.plater@example.test', name: 'Brayson Plater', gradeFrom: 2, gradeTo: 3 },
     { email: 'kaydon.plater@example.test', name: 'Kaydon Plater', gradeFrom: 5, gradeTo: 6 },
     { email: 'eliyah.plater@example.test', name: 'Eliyah', gradeFrom: 6, gradeTo: 7 },
