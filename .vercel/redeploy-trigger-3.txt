@@ -1,0 +1,3 @@
+Triggering Vercel redeploy to pick up latest schema and deps fixes
+
+Timestamp: 2026-08-08T06:30:00Z
