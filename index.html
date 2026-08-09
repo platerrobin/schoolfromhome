@@ -41,13 +41,13 @@ html<!DOCTYPE html>
                 <option value="admin">Administrator Portal</option>
                 <option value="Jayce">Jayce (1st/2nd)</option>
                 <option value="Brayson">Brayson (3rd)</option>
-                <option value="girl3">Girl 3 (5th)</option>
+                <option value="Girl 3">Girl 3 (5th)</option>
                 <option value="Kaydon">Kaydon (6th)</option>
                 <option value="Elijah">Elijah (7th)</option>
-                <option value="girl4">Girl 4 (8th)</option>
-                <option value="girl5">Girl 5 (9th)</option>
-                <option value="girl1">Girl 1 (12th)</option>
-                <option value="girl2">Girl 2 (12th)</option>
+                <option value="Girl 4">Girl 4 (8th)</option>
+                <option value="Girl 5">Girl 5 (9th)</option>
+                <option value="Girl 1">Girl 1 (12th)</option>
+                <option value="Girl 2">Girl 2 (12th)</option>
             </select>
         </div>
         <div class="form-group">
@@ -64,12 +64,12 @@ html<!DOCTYPE html>
         <div class="grid-dashboard">
             <div class="panel-box">
                 <h2>🚀 Launch Learning Apps</h2>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Tap your school button below to launch your lessons safely in a new student tab:</p>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Tap an assignment below to open your lessons safely in a new student tab:</p>
                 <div id="studentActivityList"></div>
             </div>
             <div class="panel-box">
-                <h2>📋 Daily Learning Core</h2>
-                <p style="font-size: 15px; line-height: 1.6; margin-top: 10px;">Please check into your math dashboard first, finish your morning reading module, and record your scores for verification.</p>
+                <h2>📋 Daily Learning Progress</h2>
+                <p style="font-size: 15px; line-height: 1.6; margin-top: 10px;">Please load up your assigned core math platform first, read one full story chapter, and show your administrator your screen progress when done.</p>
             </div>
         </div>
         <button class="back-btn" onclick="logout()">Log Out</button>
@@ -77,15 +77,15 @@ html<!DOCTYPE html>
 
     <!-- ADMIN PANEL -->
     <div id="adminPanel" class="container portal-layout hidden">
-        <h1>Admin Control Center</h1>
-        <h2>Active Classroom (9 Registered Students)</h2>
+        <h1>Admin Control Desk</h1>
+        <h2>Active Classroom Tracker (9 Students Placed)</h2>
         <div class="grid-dashboard">
             <div>
                 <div id="studentListContainer"></div>
             </div>
             <div class="panel-box" id="adminInspector">
                 <h2>Quick Inspector</h2>
-                <p style="color: #64748b; font-size: 14px;">Select a student card from your list to check security keys or review active class apps instantly.</p>
+                <p style="color: #64748b; font-size: 14px;">Select a student from your active deck list to look over their tracks or test links instantly.</p>
             </div>
         </div>
         <button class="back-btn" onclick="logout()">Exit Admin Desk</button>
@@ -93,15 +93,15 @@ html<!DOCTYPE html>
 
     <script>
         const students = {
-            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade", activities: [ { title: "🎮 Launch ABCya Games", url: "https://abcya.com" }, { title: "📚 Open Starfall Space", url: "https://starfall.com" } ] },
-            "Brayson": { name: "Brayson", pin: "1002", level: "3rd Grade", activities: [ { title: "⚔️ Open Prodigy Math Quest", url: "https://prodigygame.com" }, { title: "🧠 Open Khan Academy Kids", url: "https://khanacademy.org" } ] },
-            "girl3": { name: "Girl 3", pin: "1003", level: "5th Grade", activities: [ { title: "⌨️ Open Typing Drills", url: "https://typing.com" } ] },
-            "Kaydon": { name: "Kaydon", pin: "1004", level: "6th Grade", activities: [ { title: "📐 Open Khan Academy Math", url: "https://khanacademy.org" }, { title: "🌍 Open National Geographic", url: "https://nationalgeographic.com" } ] },
-            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Level", activities: [ { title: "🔬 Open Middle School Science", url: "https://khanacademy.org" } ] },
-            "girl4": { name: "Girl 4", pin: "1008", level: "8th Grade Track", activities: [ { title: "📐 Open Pre-Algebra Studio", url: "https://khanacademy.org" } ] },
-            "girl5": { name: "Girl 5", pin: "1009", level: "9th Grade Track", activities: [ { title: "📐 Open Algebra 1 Course", url: "https://khanacademy.org" } ] },
-            "girl1": { name: "Girl 1", pin: "1006", level: "12th Grade", activities: [ { title: "📝 Open Research Library", url: "https://wikipedia.org" } ] },
-            "girl2": { name: "Girl 2", pin: "1007", level: "12th Grade", activities: [ { title: "🎓 Open Graduation Thesis", url: "https://wikipedia.org" } ] }
+            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🐭 Open ABCmouse Portal", url: "https://abcmouse.com" }, { title: "📚 Open Starfall Reading", url: "https://starfall.com" } ] },
+            "Brayson": { name: "Brayson", pin: "1002", level: "3rd Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🧠 Open Khan Academy Lessons", url: "https://khanacademy.org" } ] },
+            "Girl 3": { name: "Girl 3", pin: "1003", level: "5th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "⌨️ Free Typing Speed Drills", url: "https://typing.com" } ] },
+            "Kaydon": { name: "Kaydon", pin: "1004", level: "6th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Khan Academy Core Math", url: "https://khanacademy.org" } ] },
+            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Tracking Path", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🔬 Middle School Science Hub", url: "https://khanacademy.org" } ] },
+            "Girl 4": { name: "Girl 4", pin: "1008", level: "8th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Pre-Algebra Lessons", url: "https://khanacademy.org" } ] },
+            "Girl 5": { name: "Girl 5", pin: "1009", level: "9th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Algebra 1 Studio", url: "https://khanacademy.org" } ] },
+            "Girl 1": { name: "Girl 1", pin: "1006", level: "12th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📝 Free Public Research Library", url: "https://wikipedia.org" } ] },
+            "Girl 2": { name: "Girl 2", pin: "1007", level: "12th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🎓 Advanced Graduation Thesis Desk", url: "https://wikipedia.org" } ] }
         };
         const adminPin = "8899";
 
@@ -125,7 +125,7 @@ html<!DOCTYPE html>
             for(let i=0; i<s.activities.length; i++) {
                 acts += '<button class="activity-btn" onclick="window.open(\''+s.activities[i].url+'\', \'_blank\')">' + s.activities[i].title + '</button>';
             }
-            inspector.innerHTML = '<h2>' + s.name + ' Profile Hub</h2><p><strong>Track:</strong> ' + s.level + '</p><p><strong>PIN:</strong> ' + s.pin + '</p><hr style="margin:15px 0; border:0; border-top:1px solid #cbd5e1;"><p style="font-weight:bold; margin-bottom:5px;">Admin Quick Launch View:</p>' + acts;
+            inspector.innerHTML = '<h2>' + s.name + ' Control Hub</h2><p><strong>Grade Track:</strong> ' + s.level + '</p><p><strong>Active Passcode:</strong> Code ' + s.pin + '</p><hr style="margin:15px 0; border:0; border-top:1px solid #cbd5e1;"><p style="font-weight:bold; margin-bottom:5px;">Admin Quick Test Launcher:</p>' + acts;
         }
 
         function loadStudentDashboard(key) {
@@ -137,16 +137,3 @@ html<!DOCTYPE html>
                 const btn = document.createElement('button');
                 btn.className = "activity-btn";
                 btn.innerText = act.title;
-                btn.onclick = function() { window.open(act.url, '_blank'); };
-                list.appendChild(btn);
-            });
-        }
-
-        function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pin = document.getElementById('passcode').value;
-            const errorElement = document.getElementById('loginError');
-            errorElement.classList.add('hidden');
-
-            if (user === "admin" && pin === adminPin) {
-                document.getElementById('loginScreen').classList.add('hidden');
