@@ -27,10 +27,16 @@ html<!DOCTYPE html>
         .error-msg { color: #dc2626; font-size: 14px; margin-top: 10px; font-weight: bold; }
         .activity-btn { display: block; width: 100%; background: #4f46e5; color: white; padding: 15px; margin: 12px 0; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; text-align: center; border: none; cursor: pointer; }
         .activity-btn:hover { background: #4338ca; }
+        
+        /* Quiz Module Elements */
+        .quiz-box { background-color: #fff; border: 2px dashed var(--border-color); padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .quiz-option { display: block; margin: 12px 0; font-size: 16px; cursor: pointer; text-align: left; }
+        .quiz-option input { margin-right: 10px; width: auto; display: inline; }
     </style>
 </head>
 <body>
-    <!-- LOGIN SCREEN -->
+
+    <!-- MASTER GATEWAY SIGN IN -->
     <div id="loginScreen" class="container">
         <h1>School From Home</h1>
         <h2>Student & Admin Login</h2>
@@ -55,10 +61,10 @@ html<!DOCTYPE html>
             <input type="password" id="passcode" placeholder="Enter code">
         </div>
         <button onclick="handleLogin()">Access Dashboard</button>
-        <div id="loginError" class="error-msg hidden">Invalid credentials.</div>
+        <div id="loginError" class="error-msg hidden">❌ Invalid credentials. Please try again.</div>
     </div>
 
-    <!-- STUDENT DASHBOARD -->
+    <!-- STUDENT VIEW MODULE -->
     <div id="studentDashboard" class="container portal-layout hidden">
         <h1 id="welcomeText">Welcome Student</h1>
         <div class="grid-dashboard">
@@ -67,15 +73,25 @@ html<!DOCTYPE html>
                 <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Tap an assignment below to open your lessons safely in a new student tab:</p>
                 <div id="studentActivityList"></div>
             </div>
+            
             <div class="panel-box">
-                <h2>📋 Daily Learning Progress</h2>
-                <p style="font-size: 15px; line-height: 1.6; margin-top: 10px;">Please load up your assigned core math platform first, read one full story chapter, and show your administrator your screen progress when done.</p>
+                <h2>📝 Custom Quiz Check-In</h2>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Complete your custom daily review challenge directly inside your tracking workspace:</p>
+                <button onclick="revealQuizEngine()" class="activity-btn" style="background:#475569;">Open Daily Practice Quiz ↓</button>
+                
+                <div id="quizEngine" class="quiz-box hidden">
+                    <h3 style="margin-bottom:10px; color:#2563eb;">🍎 Focus Room Challenge</h3>
+                    <p id="quizQuestion" style="font-weight:bold; margin-bottom:15px;"></p>
+                    <div id="quizOptionsArea"></div>
+                    <button onclick="gradeQuizEngine()" class="activity-btn" style="background:#10b981; margin-top:15px;">Submit Score</button>
+                    <div id="quizFeedback" style="margin-top:15px; font-weight:bold; text-align:center;"></div>
+                </div>
             </div>
         </div>
         <button class="back-btn" onclick="logout()">Log Out</button>
     </div>
 
-    <!-- ADMIN PANEL -->
+    <!-- ADMINISTRATIVE DESK -->
     <div id="adminPanel" class="container portal-layout hidden">
         <h1>Admin Control Desk</h1>
         <h2>Active Classroom Tracker (9 Students Placed)</h2>
@@ -93,47 +109,10 @@ html<!DOCTYPE html>
 
     <script>
         const students = {
-            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🐭 Open ABCmouse Portal", url: "https://abcmouse.com" }, { title: "📚 Open Starfall Reading", url: "https://starfall.com" } ] },
-            "Brayson": { name: "Brayson", pin: "1002", level: "3rd Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🧠 Open Khan Academy Lessons", url: "https://khanacademy.org" } ] },
-            "Girl 3": { name: "Girl 3", pin: "1003", level: "5th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "⌨️ Free Typing Speed Drills", url: "https://typing.com" } ] },
-            "Kaydon": { name: "Kaydon", pin: "1004", level: "6th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Khan Academy Core Math", url: "https://khanacademy.org" } ] },
-            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Tracking Path", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🔬 Middle School Science Hub", url: "https://khanacademy.org" } ] },
-            "Girl 4": { name: "Girl 4", pin: "1008", level: "8th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Pre-Algebra Lessons", url: "https://khanacademy.org" } ] },
-            "Girl 5": { name: "Girl 5", pin: "1009", level: "9th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Algebra 1 Studio", url: "https://khanacademy.org" } ] },
-            "Girl 1": { name: "Girl 1", pin: "1006", level: "12th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📝 Free Public Research Library", url: "https://wikipedia.org" } ] },
-            "Girl 2": { name: "Girl 2", pin: "1007", level: "12th Grade Track", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🎓 Advanced Graduation Thesis Desk", url: "https://wikipedia.org" } ] }
-        };
-        const adminPin = "8899";
-
-        function loadAdminPanel() {
-            const container = document.getElementById('studentListContainer');
-            container.innerHTML = '';
-            Object.keys(students).forEach(key => {
-                const s = students[key];
-                const node = document.createElement('div');
-                node.className = 'student-card';
-                node.onclick = function() { inspectStudent(key); };
-                node.innerHTML = '<div><h3>' + s.name + '</h3><p style="color: #64748b; font-size:13px;">' + s.level + '</p></div><span style="font-weight:bold; color:#10b981;">PIN: ' + s.pin + '</span>';
-                container.appendChild(node);
-            });
-        }
-
-        function inspectStudent(key) {
-            const s = students[key];
-            const inspector = document.getElementById('adminInspector');
-            let acts = '';
-            for(let i=0; i<s.activities.length; i++) {
-                acts += '<button class="activity-btn" onclick="window.open(\''+s.activities[i].url+'\', \'_blank\')">' + s.activities[i].title + '</button>';
-            }
-            inspector.innerHTML = '<h2>' + s.name + ' Control Hub</h2><p><strong>Grade Track:</strong> ' + s.level + '</p><p><strong>Active Passcode:</strong> Code ' + s.pin + '</p><hr style="margin:15px 0; border:0; border-top:1px solid #cbd5e1;"><p style="font-weight:bold; margin-bottom:5px;">Admin Quick Test Launcher:</p>' + acts;
-        }
-
-        function loadStudentDashboard(key) {
-            const s = students[key];
-            document.getElementById('welcomeText').innerText = 'Welcome back, ' + s.name + '!';
-            const list = document.getElementById('studentActivityList');
-            list.innerHTML = '';
-            s.activities.forEach(act => {
-                const btn = document.createElement('button');
-                btn.className = "activity-btn";
-                btn.innerText = act.title;
+            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade Track", quiz: "Sarah has 4 apples. Her brother gives her 3 more apples. How many apples does Sarah have in total?", answers: ["3", "6", "7", "8"], correct: "7", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🐭 Open ABCmouse Portal", url: "https://abcmouse.com" }, { title: "📚 Open Starfall Reading", url: "https://starfall.com" } ] },
+            "Brayson": { name: "Brayson", pin: "1002", level: "3rd Grade Track", quiz: "How many sides does a triangle have?", answers: ["3", "4", "5", "6"], correct: "3", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🧠 Open Khan Academy Lessons", url: "https://khanacademy.org" } ] },
+            "Girl 3": { name: "Girl 3", pin: "1003", level: "5th Grade Track", quiz: "If you cut a round pizza into 4 equal slices and you eat 1 slice, what fraction did you eat?", answers: ["1/4", "1/2", "3/4", "4/4"], correct: "1/4", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "typing drills", url: "https://typing.com" } ] },
+            "Kaydon": { name: "Kaydon", pin: "1004", level: "6th Grade Track", quiz: "In the sentence 'The tiny kitten made a very loud noise,' what is another word for tiny?", answers: ["Huge", "Loud", "Small", "Bright"], correct: "Small", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Khan Academy Core Math", url: "https://khanacademy.org" } ] },
+            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Tracking Path", quiz: "Read the story: 'Tom and his dog Max went to the park. They played fetch for an hour and then ate a picnic lunch under a big tree.' What is this story mostly about?", answers: ["Tom learning to ride a bike", "Tom's favorite food", "Tom and his dog spending a fun day at the park", "Max eating lunch"], correct: "Tom and his dog spending a fun day at the park", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🔬 Middle School Science Hub", url: "https://khanacademy.org" } ] },
+            "Girl 4": { name: "Girl 4", pin: "1008", level: "8th Grade Track", quiz: "Solve for x: x + 5 = 12", answers: ["5", "7", "12", "17"], correct: "7", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Pre-Algebra Lessons", url: "https://khanacademy.org" } ] },
+            "Girl 5": { name: "Girl 5", pin: "1009", level: "9th Grade Track", qui
