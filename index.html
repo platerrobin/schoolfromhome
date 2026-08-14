@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,8 +27,6 @@
         .error-msg { color: #dc2626; font-size: 14px; margin-top: 10px; font-weight: bold; }
         .activity-btn { display: block; width: 100%; background: #4f46e5; color: white; padding: 15px; margin: 12px 0; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; text-align: center; border: none; cursor: pointer; }
         .activity-btn:hover { background: #4338ca; }
-        
-        /* Quiz Module Elements */
         .quiz-box { background-color: #fff; border: 2px dashed var(--border-color); padding: 20px; border-radius: 8px; margin-top: 20px; }
         .quiz-option { display: block; margin: 12px 0; font-size: 16px; cursor: pointer; text-align: left; }
         .quiz-option input { margin-right: 10px; width: auto; display: inline; }
@@ -47,13 +45,8 @@
                 <option value="admin">Administrator Portal</option>
                 <option value="Jayce">Jayce (1st/2nd)</option>
                 <option value="Brayson">Brayson (3rd)</option>
-                <option value="Girl 3">Girl 3 (5th)</option>
                 <option value="Kaydon">Kaydon (6th)</option>
                 <option value="Elijah">Elijah (7th)</option>
-                <option value="Girl 4">Girl 4 (8th)</option>
-                <option value="Girl 5">Girl 5 (9th)</option>
-                <option value="Girl 1">Girl 1 (12th)</option>
-                <option value="Girl 2">Girl 2 (12th)</option>
             </select>
         </div>
         <div class="form-group">
@@ -61,7 +54,7 @@
             <input type="password" id="passcode" placeholder="Enter code">
         </div>
         <button onclick="handleLogin()">Access Dashboard</button>
-        <div id="loginError" class="error-msg hidden">密 Invalid credentials. Please try again.</div>
+        <div id="loginError" class="error-msg hidden">❌ Invalid credentials. Please try again.</div>
     </div>
 
     <!-- STUDENT VIEW MODULE -->
@@ -94,7 +87,7 @@
     <!-- ADMINISTRATIVE DESK -->
     <div id="adminPanel" class="container portal-layout hidden">
         <h1>Admin Control Desk</h1>
-        <h2>Active Classroom Tracker (9 Students Placed)</h2>
+        <h2>Active Classroom Tracker</h2>
         <div class="grid-dashboard">
             <div>
                 <div id="studentListContainer"></div>
@@ -109,10 +102,51 @@
 
     <script>
         const students = {
-            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade Track", quiz: "Sarah has 4 apples. Her brother gives her 3 more apples. How many apples does Sarah have in total?", answers: ["3", "6", "7", "8"], correct: "7", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🐭 Open ABCmouse Portal", url: "https://abcmouse.com" }, { title: "📚 Open Starfall Reading", url: "https://starfall.com" } ] },
+            "Jayce": { name: "Jayce", pin: "1001", level: "1st & 2nd Grade Track", quiz: "Sarah has 4 apples. Her brother gives her 3 more apples. How many apples does Sarah have in total?", answers: ["3", "6", "7", "8"], correct: "7", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🐭 Open ABCmouse Portal", url: "https://abcmouse.com" } ] },
             "Brayson": { name: "Brayson", pin: "1002", level: "3rd Grade Track", quiz: "How many sides does a triangle have?", answers: ["3", "4", "5", "6"], correct: "3", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🧠 Open Khan Academy Lessons", url: "https://khanacademy.org" } ] },
-            "Girl 3": { name: "Girl 3", pin: "1003", level: "5th Grade Track", quiz: "If you cut a round pizza into 4 equal slices and you eat 1 slice, what fraction did you eat?", answers: ["1/4", "1/2", "3/4", "4/4"], correct: "1/4", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "typing drills", url: "https://typing.com" } ] },
             "Kaydon": { name: "Kaydon", pin: "1004", level: "6th Grade Track", quiz: "In the sentence 'The tiny kitten made a very loud noise,' what is another word for tiny?", answers: ["Huge", "Loud", "Small", "Bright"], correct: "Small", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Khan Academy Core Math", url: "https://khanacademy.org" } ] },
-            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Tracking Path", quiz: "Read the story: 'Tom and his dog Max went to the park. They played fetch for an hour and then ate a picnic lunch under a big tree.' What is this story mostly about?", answers: ["Tom learning to ride a bike", "Tom's favorite food", "Tom and his dog spending a fun day at the park", "Max eating lunch"], correct: "Tom and his dog spending a fun day at the park", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "🔬 Middle School Science Hub", url: "https://khanacademy.org" } ] },
-            "Girl 4": { name: "Girl 4", pin: "1008", level: "8th Grade Track", quiz: "Solve for x: x + 5 = 12", answers: ["5", "7", "12", "17"], correct: "7", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Pre-Algebra Lessons", url: "https://khanacademy.org" } ] },
-            "Girl 5": { name: "Girl 5", pin: "1009", level: "9th Grade Track", quiz: "What is the absolute value of -15?", answers: ["-15", "0", "15", "30"], correct: "15", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" }, { title: "📐 Free Algebra 1 Studio", url: "https://khanacademy.org" } ] },
+            "Elijah": { name: "Elijah", pin: "1005", level: "7th Grade Tracking Path", quiz: "What is 10 minus 4?", answers: ["4", "5", "6", "7"], correct: "6", activities: [ { title: "🟢 Launch IXL Learning", url: "https://ixl.com" } ] }
+        };
+        const adminPin = "8899";
+        let activeUser = null;
+
+        function loadAdminPanel() {
+            const container = document.getElementById('studentListContainer');
+            container.innerHTML = '';
+            Object.keys(students).forEach(key => {
+                const s = students[key];
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `<strong>${s.name}</strong> <span>${s.level}</span>`;
+                card.onclick = () => inspectStudent(key);
+                container.appendChild(card);
+            });
+        }
+
+        function inspectStudent(key) {
+            const s = students[key];
+            const inspector = document.getElementById('adminInspector');
+            let actsHtml = '';
+            s.activities.forEach(a => { actsHtml += `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`; });
+            inspector.innerHTML = `
+                <h2>Inspector: ${s.name}</h2>
+                <p><strong>PIN:</strong> ${s.pin}</p>
+                <p><strong>Assignment Tracker:</strong> ${s.level}</p>
+                <h4 style="margin-top:10px;">Assigned Framework Hubs:</h4>
+                <ul style="margin-left:20px; margin-top:5px;">${actsHtml}</ul>
+            `;
+        }
+
+        function handleLogin() {
+            const userSelect = document.getElementById('username').value;
+            const pinInput = document.getElementById('passcode').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (userSelect === "admin" && pinInput === adminPin) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                loadAdminPanel();
+                errorDiv.classList.add('hidden');
+            } else if (students[userSelect] && students[userSelect].pin === pinInput) {
+                activeUser = students[userSelect];
+                document.getElementById('loginScreen').classList.add('hidden');
