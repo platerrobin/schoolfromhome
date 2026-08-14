@@ -1,12 +1,153 @@
 html<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>School Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School From Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 90vh; }
+        .box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+        .hidden { display: none !important; }
+        select, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; background: #2563eb; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #1d4ed8; }
+        .logout { background: #64748b; margin-top: 20px; }
+        .app-btn { display: block; background: #4f46e5; color: white; padding: 12px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 10px 0; }
+        .quiz-panel { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; text-align: left; }
+        th, td { border: 1px solid #cbd5e1; padding: 10px; }
+        th { background: #f1f5f9; }
+    </style>
 </head>
-<body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f4f8;">
-    <h1 style="color: #2563eb;">🏠 School From Home Portal is Working!</h1>
-    <p
-style="font-size: 18px;">If you see this message, your server is updating successfully.</p>
-    <button onclick="alert('Success! Your login buttons are fully active!')" style="padding: 12px 25px; background: #10b981; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">Click to Test Buttons</button>
+<body>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="loginScreen" class="box">
+        <h2 style="color: #1e3a8a; margin-bottom: 5px;">🏠 School From Home</h2>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Student & Admin Portal</p>
+        
+        <select id="userSelect">
+            <option value="" disabled selected>Select Your Name...</option>
+            <option value="admin">Administrator (Teacher)</option>
+            <option value="Jayce">Jayce (1st/2nd)</option>
+            <option value="Brayson">Brayson (3rd)</option>
+            <option value="Kaydon">Kaydon (6th)</option>
+            <option value="Elijah">Elijah (7th)</option>
+        </select>
+        
+        <input type="password" id="passInput" placeholder="Enter 4-Digit PIN">
+        <button onclick="checkLogin()">Access Workspace</button>
+        <p id="loginError" class="hidden" style="color: red; font-weight: bold; margin-top: 10px;">❌ Invalid PIN code.</p>
+    </div>
+
+    <!-- 2. STUDENT VIEW -->
+    <div id="studentScreen" class="box hidden" style="max-width: 600px; text-align: left;">
+        <h2 id="welcomeText" style="color: #2563eb; margin: 0;">Welcome</h2>
+        <p id="levelText" style="color: #64748b; margin: 5px 0 20px 0; font-weight: bold;"></p>
+        
+        <h3>🚀 Your Learning Apps</h3>
+        <div id="appsList"></div>
+        
+        <div class="quiz-panel">
+            <h4 style="margin: 0 0 10px 0; color: #4f46e5;">📝 Today's Practice Challenge</h4>
+            <p id="quizQuestion" style="font-weight: bold; margin-bottom: 10px;"></p>
+            <div id="optionsArea"></div>
+            <button onclick="checkQuiz()" style="background: #10b981; padding: 8px; font-size: 14px;">Submit Answer</button>
+            <p id="quizFeedback" style="font-weight: bold; margin-top: 10px; text-align: center;"></p>
+        </div>
+        
+        <button class="logout" onclick="userLogout()">Log Out</button>
+    </div>
+
+    <!-- 3. TEACHER DASHBOARD -->
+    <div id="teacherScreen" class="box hidden" style="max-width: 700px; text-align: left;">
+        <h2 style="color: #10b981; margin: 0;">Admin Control Desk ✨</h2>
+        <p style="color: #64748b; margin: 5px 0 20px 0;">Active Classroom Tracker</p>
+        
+        <h3>📋 Student Gradebook Roster</h3>
+        <table>
+            <thead>
+                <tr><th>Student</th><th>Grade Track</th><th>PIN</th><th>Math Status</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Jayce</strong></td><td>1st & 2nd Track</td><td>1001</td><td>ABCmouse Active</td></tr>
+                <tr><td><strong>Brayson</strong></td><td>3rd Track</td><td>1002</td><td>IXL Math Diagnostics</td></tr>
+                <tr><td><strong>Kaydon</strong></td><td>6th Track</td><td>1004</td><td>Fractions Review</td></tr>
+                <tr><td><strong>Elijah</strong></td><td>7th Track</td><td>1005</td><td>Decimals Introduction</td></tr>
+            </tbody>
+        </table>
+        
+        <button class="logout" onclick="userLogout()">Exit Admin Desk</button>
+    </div>
+
+    <script>
+        const systemData = {
+            "Jayce": { pin: "1001", level: "1st & 2nd Grade", q: "Sarah has 4 apples. Her brother gives her 3 more apples. How many apples does Sarah have in total?", opts: ["3", "6", "7", "8"], ans: "7", apps: [{t: "🟢 Launch IXL Learning", u: "https://ixl.com"}, {t: "🐭 Open ABCmouse", u: "https://abcmouse.com"}] },
+            "Brayson": { pin: "1002", level: "3rd Grade", q: "How many sides does a triangle have?", opts: ["3", "4", "5", "6"], ans: "3", apps: [{t: "🟢 Launch IXL Learning", u: "https://ixl.com"}, {t: "🧠 Open Khan Academy", u: "https://khanacademy.org"}] },
+            "Kaydon": { pin: "1004", level: "6th Grade", q: "In the sentence 'The tiny kitten made a very loud noise,' what is another word for tiny?", opts: ["Huge", "Loud", "Small", "Bright"], ans: "Small", apps: [{t: "🟢 Launch IXL Learning", url: "https://ixl.com"}, {t: "📐 Khan Academy Math", u: "https://khanacademy.org"}] },
+            "Elijah": { pin: "1005", level: "7th Grade", q: "What is 10 minus 4?", opts: ["4", "5", "6", "7"], ans: "6", apps: [{t: "🟢 Launch IXL Learning", u: "https://ixl.com"}] }
+        };
+        const masterAdminPin = "8899";
+        let currentStudent = null;
+
+        function checkLogin() {
+            const user = document.getElementById('userSelect').value;
+            const pin = document.getElementById('passInput').value.trim();
+            const err = document.getElementById('loginError');
+
+            if (user === "admin" && pin === masterAdminPin) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('teacherScreen').classList.remove('hidden');
+                err.classList.add('hidden');
+            } else if (systemData[user] && systemData[user].pin === pin) {
+                currentStudent = systemData[user];
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('studentScreen').classList.remove('hidden');
+                document.getElementById('welcomeText').innerText = `Welcome Back, ${user}! ✨`;
+                document.getElementById('levelText').innerText = `🎯 Track Placement: ${currentStudent.level}`;
+                
+                const list = document.getElementById('appsList');
+                list.innerHTML = '';
+                currentStudent.apps.forEach(a => {
+                    list.innerHTML += `<a href="${a.u}" target="_blank" class="app-btn">${a.t}</a>`;
+                });
+                
+                document.getElementById('quizQuestion').innerText = currentStudent.q;
+                const optsBox = document.getElementById('optionsArea');
+                optsBox.innerHTML = '';
+                currentStudent.opts.forEach(o => {
+                    optsBox.innerHTML += `<label style="display:block; margin:8px 0;"><input type="radio" name="quizOpt" value="${o}"> ${o}</label>`;
+                });
+                document.getElementById('quizFeedback').innerText = '';
+                err.classList.add('hidden');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        function checkQuiz() {
+            const radios = document.getElementsByName('quizOpt');
+            let picked = "";
+            for (let r of radios) { if (r.checked) picked = r.value; }
+            const feedback = document.getElementById('quizFeedback');
+            
+            if (picked === currentStudent.ans) {
+                feedback.innerHTML = "<span style='color:#10b981;'>🎉 100% CORRECT! Excellent math work!</span>";
+            } else if (picked === "") {
+                feedback.innerHTML = "<span style='color:#64748b;'>⚠️ Please bubble in an answer choice first.</span>";
+            } else {
+                feedback.innerHTML = "<span style='color:#dc2626;'>❌ Not quite! Try checking your math again.</span>";
+            }
+        }
+
+        function userLogout() {
+            document.getElementById('studentScreen').classList.add('hidden');
+            document.getElementById('teacherScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('passInput').value = '';
+            document.getElementById('userSelect').value = '';
+            currentStudent = null;
+        }
+    </script>
 </body>
 </html>
